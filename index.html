@@ -873,8 +873,8 @@
         .social-button {
             width: 70px;
             height: 70px;
-            background: transparent;
-            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(26, 26, 46, 0.2);
             color: #1A1A2E;
             border-radius: 50%;
             cursor: pointer;
@@ -884,24 +884,26 @@
             align-items: center;
             justify-content: center;
             position: relative;
+            overflow: hidden;
         }
 
         .social-button:hover {
             transform: translateY(-8px) scale(1.15) rotate(5deg);
+            border-color: #4ECDC4;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
 
         .social-logo {
-            width: 55px;
-            height: 55px;
+            width: 50px;
+            height: 50px;
             object-fit: contain;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            filter: brightness(1);
+            mix-blend-mode: multiply;
         }
 
         .social-button:hover .social-logo {
-            width: 70px;
-            height: 70px;
-            filter: brightness(1.1) drop-shadow(0 4px 12px rgba(78, 205, 196, 0.5));
+            width: 65px;
+            height: 65px;
         }
 
         .social-icon {
