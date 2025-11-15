@@ -889,8 +889,23 @@
         }
         
         .social-button:hover {
-            transform: translateY(-5px) scale(1.1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transform: translateY(-8px) scale(1.15) rotate(5deg);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.9);
+            border-color: #4ECDC4;
+        }
+
+        .social-logo {
+            width: 45px;
+            height: 45px;
+            object-fit: contain;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: brightness(0.9);
+        }
+
+        .social-button:hover .social-logo {
+            transform: scale(1.1);
+            filter: brightness(1) drop-shadow(0 2px 8px rgba(78, 205, 196, 0.4));
         }
 
         .social-icon {
@@ -1292,24 +1307,16 @@
             <h2 class="social-title">JOIN THE CONSPIRACY</h2>
             <div class="social-buttons">
                 <a href="#" class="social-button" title="X (Twitter)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                    </svg>
+                    <img src="images/x-logo.png" alt="X" class="social-logo">
                 </a>
                 <a href="#" class="social-button" title="X Community">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm3.5 8L13 12.5 15.5 15l-1 1L12 13.5 9.5 16l-1-1 2.5-2.5L8.5 10l1-1 2.5 2.5L14.5 8l1 1z"/>
-                    </svg>
+                    <img src="images/x-logo.png" alt="X Community" class="social-logo">
                 </a>
                 <a href="#" class="social-button" title="Telegram">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
-                    </svg>
+                    <img src="images/telegram-logo.png" alt="Telegram" class="social-logo">
                 </a>
                 <a href="#" class="social-button" title="DexScreener">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5zm-2 16l-4-4 1.41-1.41L10 15.17l6.59-6.59L18 10l-8 8z"/>
-                    </svg>
+                    <img src="images/dexscreener-logo.png" alt="DexScreener" class="social-logo">
                 </a>
             </div>
         </div>
