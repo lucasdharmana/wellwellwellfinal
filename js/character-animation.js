@@ -65,11 +65,8 @@
                 backface-visibility: hidden;
             `;
 
-            // Fix character directions: Jew faces left, Africa faces right
-            if (characterType === 'africa') {
-                character.style.transform = 'scaleX(-1)';
-            }
-            
+            // Character directions - no flip needed, images face correct direction
+
             // Create and add image
             const img = document.createElement('img');
             img.src = imagePath;
