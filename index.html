@@ -871,41 +871,91 @@
         }
         
         .social-button {
-    width: 70px;
-    height: 70px;
-    background: transparent;
-    border: 2px solid rgba(26, 26, 46, 0.3);
-    border-radius: 50%;
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-}
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.4);
+            border: 2px solid rgba(26, 26, 46, 0.2);
+            color: #1A1A2E;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
 
-.social-button:hover {
-    transform: translateY(-8px) scale(1.15) rotate(5deg);
-    border-color: #4ECDC4;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
+        .social-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(78, 205, 196, 0.3), rgba(255, 107, 107, 0.3));
+            opacity: 0;
+            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-.social-logo {
-    width: 50px;
-    height: 50px;
-    object-fit: contain;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    filter: drop-shadow(0 0 0 transparent);
-    background: transparent;
-}
+        .social-button:hover::before {
+            opacity: 1;
+        }
 
-.social-button:hover .social-logo {
-    width: 68px;
-    height: 68px;
-    filter: drop-shadow(0 4px 8px rgba(78, 205, 196, 0.4));
-}
+        .social-button:hover {
+            transform: translateY(-10px) scale(1.15);
+            background: rgba(255, 255, 255, 0.85);
+            box-shadow:
+                0 15px 35px rgba(78, 205, 196, 0.3),
+                0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .social-button img {
+            width: 48px;
+            height: 48px;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            object-fit: contain;
+        }
+
+        .social-button:hover img {
+            transform: scale(1.15) rotate(5deg);
+        }
+
+        /* Individual button hover colors */
+        .social-button.x-profile:hover,
+        .social-button.x-community:hover {
+            border-color: #1A1A2E;
+            box-shadow:
+                0 15px 35px rgba(26, 26, 46, 0.25),
+                0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .social-button.telegram:hover {
+            border-color: #4ECDC4;
+            box-shadow:
+                0 15px 35px rgba(78, 205, 196, 0.4),
+                0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .social-button.telegram:hover img {
+            transform: translateX(4px) translateY(-2px) rotate(-15deg);
+        }
+
+        .social-button.dex:hover {
+            border-color: #FFE66D;
+            box-shadow:
+                0 15px 35px rgba(255, 230, 109, 0.4),
+                0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .social-button.dex:hover img {
+            transform: scale(1.2) rotate(-5deg);
+        }
 
         .social-icon {
             font-size: 28px;
@@ -1305,17 +1355,17 @@
 
             <h2 class="social-title">JOIN THE CONSPIRACY</h2>
             <div class="social-buttons">
-                <a href="#" class="social-button" title="X (Twitter)">
-                    <img src="images/x-logo.png" alt="X" class="social-logo">
+                <a href="#" class="social-button x-profile" title="X (Twitter)">
+                    <img src="images/x-logo.png" alt="X">
                 </a>
-                <a href="#" class="social-button" title="X Community">
-                    <img src="images/x-logo.png" alt="X Community" class="social-logo">
+                <a href="#" class="social-button x-community" title="X Community">
+                    <img src="images/x-logo.png" alt="X Community">
                 </a>
-                <a href="#" class="social-button" title="Telegram">
-                    <img src="images/telegram-logo.png" alt="Telegram" class="social-logo">
+                <a href="#" class="social-button telegram" title="Telegram">
+                    <img src="images/telegram-logo.png" alt="Telegram">
                 </a>
-                <a href="#" class="social-button" title="DexScreener">
-                    <img src="images/dexscreener-logo.png" alt="DexScreener" class="social-logo">
+                <a href="#" class="social-button dex" title="DexScreener">
+                    <img src="images/dexscreener-logo.png" alt="DexScreener">
                 </a>
             </div>
         </div>
