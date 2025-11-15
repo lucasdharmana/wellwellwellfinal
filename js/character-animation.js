@@ -65,8 +65,6 @@
                 backface-visibility: hidden;
             `;
 
-            // Character directions - no flip needed, images face correct direction
-
             // Create and add image
             const img = document.createElement('img');
             img.src = imagePath;
@@ -76,6 +74,11 @@
                 object-fit: contain;
                 image-rendering: -webkit-optimize-contrast;
             `;
+
+            // Flip Africa character to face right
+            if (characterType === 'africa') {
+                img.style.transform = 'scaleX(-1)';
+            }
             
             img.onload = () => {
                 // Trigger fade-in after image loads
