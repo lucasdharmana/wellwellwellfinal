@@ -1,0 +1,17 @@
+/* Character Animation Styles for WELL WELL Website */
+
+.character {
+    /* All styles are applied inline via JavaScript for better control */
+    /* This file is kept for future enhancements and additional styling */
+}
+
+/* Optional hover effects for characters */
+.character:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+
+/* Ensure characters don't interfere with page interactions */
+.character {
+    pointer-events: none;
+}
