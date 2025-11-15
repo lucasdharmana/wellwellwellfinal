@@ -75,11 +75,6 @@
                 image-rendering: -webkit-optimize-contrast;
             `;
 
-            // Flip Africa character to face right
-            if (characterType === 'africa') {
-                img.style.transform = 'scaleX(-1)';
-            }
-            
             img.onload = () => {
                 // Trigger fade-in after image loads
                 requestAnimationFrame(() => {
