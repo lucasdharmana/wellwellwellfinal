@@ -28,10 +28,10 @@
     height: 46px;
 }
 
-/* Make Telegram same size as DexScreener */
+/* Make Telegram bigger */
 .social-button.telegram img {
-    width: 46px;
-    height: 46px;
+    width: 66px;
+    height: 66px;
 }
 
 .social-button.x-profile img {
