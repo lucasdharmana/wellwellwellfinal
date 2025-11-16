@@ -38,3 +38,10 @@
 .social-button.x-community img {
     filter: brightness(0) invert(1); /* Turns black X to white */
 }
+.social-button.x-community {
+    background: rgba(255, 255, 255, 0.4) !important; /* Same as other buttons */
+}
+
+.social-button.x-community img {
+    filter: brightness(0) invert(1); /* White X */
+}
