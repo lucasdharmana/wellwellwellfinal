@@ -32,6 +32,9 @@
 .social-button.telegram img {
     width: 66px;
     height: 66px;
+    object-position: center;
+    display: block;
+    margin: auto;
 }
 
 .social-button.x-profile img {
