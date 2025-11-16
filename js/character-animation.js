@@ -31,7 +31,6 @@
             // Find the section divider to position characters
             const divider = document.querySelector('.section-divider');
             if (!divider) {
-                console.error('Section divider not found');
                 return;
             }
 
@@ -83,7 +82,6 @@
             };
 
             img.onerror = () => {
-                console.error(`Failed to load image: ${imagePath}`);
                 // Create placeholder if image fails
                 character.style.background = 'linear-gradient(135deg, #FF6B6B, #4ECDC4)';
                 character.style.borderRadius = '50%';
@@ -92,8 +90,6 @@
             
             character.appendChild(img);
             document.body.appendChild(character);
-
-            console.log(`${characterType} character created at position ${xPosition}px, height offset: ${config.heightOffset}`);
         }, delay);
     }
 
@@ -130,8 +126,6 @@
     }
 
     function startSequence() {
-        console.log('Starting character animation sequence');
-
         // Create characters with staggered delays
         createCharacter(characterImages.jew, 'jew', config.initialDelay);
         createCharacter(characterImages.africa, 'africa', config.initialDelay + config.sequenceDelay);
@@ -185,7 +179,6 @@
             // 1.0 = bottom touches line
             config.heightOffset = offset;
             updateCharacterPositions();
-            console.log('Height offset set to:', offset);
         },
         setMobileScale: function(scale) {
             config.mobileScale = scale;
@@ -194,7 +187,6 @@
         toggleMobileFixed: function(enable) {
             config.enableMobileFixed = enable;
             updateCharacterPositions();
-            console.log('Mobile fixed positioning:', enable ? 'enabled' : 'disabled');
         }
     };
 
