@@ -15,3 +15,14 @@
 .character {
     pointer-events: none;
 }
+.social-button img {
+    width: 48px;
+    height: 48px;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    object-fit: contain;
+    /* Add these two lines */
+    mix-blend-mode: darken;
+    background: transparent;
+}
