@@ -1,20 +1,14 @@
 /* Character Animation Styles for WELL WELL Website */
-
 .character {
-    /* All styles are applied inline via JavaScript for better control */
-    /* This file is kept for future enhancements and additional styling */
+    pointer-events: none;
 }
 
-/* Optional hover effects for characters */
 .character:hover {
     transform: scale(1.05);
     transition: transform 0.3s ease;
 }
 
-/* Ensure characters don't interfere with page interactions */
-.character {
-    pointer-events: none;
-}
+/* Social button image styles */
 .social-button img {
     width: 48px;
     height: 48px;
@@ -22,7 +16,21 @@
     z-index: 1;
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     object-fit: contain;
-    /* Add these two lines */
-    mix-blend-mode: darken;
-    background: transparent;
+}
+
+/* Logo colors - controls SVG fill color */
+.social-button.x-profile {
+    color: #1A1A2E; /* Black X */
+}
+
+.social-button.x-community {
+    color: #FFFFFF; /* White X */
+}
+
+.social-button.telegram {
+    color: #1A1A2E; /* Black telegram */
+}
+
+.social-button.dex {
+    color: #1A1A2E; /* Black dex */
 }
