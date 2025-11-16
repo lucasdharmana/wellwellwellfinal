@@ -1405,7 +1405,7 @@
         function playSound() {
             const audio = document.getElementById('wellwellSound');
             audio.currentTime = 0;
-            audio.play().catch(e => console.log('Audio play failed:', e));
+            audio.play().catch(() => {});
         }
 
         function openPopup() {
@@ -1455,20 +1455,8 @@
                     e.stopPropagation();
                 });
             }
-            
-            // Prevent ticker animation pause
-            const ticker = document.querySelector('.ticker-content');
-            if (ticker) {
-                ticker.addEventListener('animationiteration', function() {
-                    this.style.animation = 'none';
-                    setTimeout(() => {
-                        this.style.animation = '';
-                    }, 10);
-                });
-            }
         });
     </script>
     <script src="js/character-animation.js"></script>
-    <script src="js/article-manager.js"></script>
 </body>
 </html>
