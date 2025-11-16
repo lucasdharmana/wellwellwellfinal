@@ -27,6 +27,18 @@
     width: 42px;
     height: 42px;
 }
+
+/* Make Telegram and X buttons same size as DexScreener */
+.social-button.telegram img {
+    width: 42px;
+    height: 42px;
+}
+
+.social-button.x-profile img {
+    width: 42px;
+    height: 42px;
+}
+
 .social-button.telegram {
     color: #1A1A2E; /* Black telegram */
 }
@@ -41,5 +53,7 @@
 }
 
 .social-button.x-community img {
+    width: 42px;
+    height: 42px;
     filter: brightness(0) invert(1);
 }
