@@ -35,10 +35,6 @@
     color: #1A1A2E; /* Black dex */
 }
 /* Make the second X button white instead of black */
-.social-button.x-community {
-    background: #1A1A2E; /* Dark background so white X shows */
-}
-
 .social-button.x-community img {
-    filter: brightness(0) invert(1); /* Turns black SVG to white */
+    filter: brightness(0) invert(1); /* Turns black X to white */
 }
