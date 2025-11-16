@@ -24,19 +24,19 @@
 }
 /* Make DexScreener logo bigger */
 .social-button.dex img {
-    width: 42px;
-    height: 42px;
+    width: 46px;
+    height: 46px;
 }
 
 /* Make Telegram and X buttons smaller */
 .social-button.telegram img {
-    width: 30px;
-    height: 30px;
+    width: 33px;
+    height: 33px;
 }
 
 .social-button.x-profile img {
-    width: 30px;
-    height: 30px;
+    width: 27px;
+    height: 27px;
 }
 
 .social-button.telegram {
@@ -53,7 +53,7 @@
 }
 
 .social-button.x-community img {
-    width: 30px;
-    height: 30px;
+    width: 27px;
+    height: 27px;
     filter: brightness(0) invert(1);
 }
