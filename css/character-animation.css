@@ -35,6 +35,7 @@
     object-position: center;
     display: block;
     margin: auto;
+    transform: translateX(-2px);
 }
 
 .social-button.x-profile img {
