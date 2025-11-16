@@ -2,3 +2,63 @@
 .character {
     pointer-events: none;
 }
+
+.character:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+
+/* Social button image styles */
+.social-button img {
+    width: 30px;
+    height: 30px;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    object-fit: contain;
+}
+
+/* Logo colors - controls SVG fill color */
+.social-button.x-profile {
+    color: #1A1A2E; /* Black X */
+}
+/* Make DexScreener logo bigger */
+.social-button.dex img {
+    width: 46px;
+    height: 46px;
+    transform: translateY(2px);
+}
+
+/* Make Telegram bigger */
+.social-button.telegram img {
+    width: 66px;
+    height: 66px;
+    object-position: center;
+    display: block;
+    margin: auto;
+    transform: translateX(-2px);
+}
+
+.social-button.x-profile img {
+    width: 27px;
+    height: 27px;
+}
+
+.social-button.telegram {
+    color: #1A1A2E; /* Black telegram */
+}
+
+.social-button.dex {
+    color: #1A1A2E; /* Black dex */
+}
+
+/* White X for community button */
+.social-button.x-community {
+    background: rgba(255, 255, 255, 0.4) !important;
+}
+
+.social-button.x-community img {
+    width: 27px;
+    height: 27px;
+    filter: brightness(0) invert(1);
+}
