@@ -30,13 +30,13 @@
 
 /* Make Telegram and X buttons smaller */
 .social-button.telegram img {
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
 }
 
 .social-button.x-profile img {
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
 }
 
 .social-button.telegram {
@@ -53,7 +53,7 @@
 }
 
 .social-button.x-community img {
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
     filter: brightness(0) invert(1);
 }
