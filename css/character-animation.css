@@ -1,83 +1,51 @@
-/* Character Animation Styles for WELL WELL Website */
-.character {
-    pointer-events: none;
-}
+/* Enhanced Character Animation Styles */
 
-.character:hover {
-    transform: scale(1.05);
-    transition: transform 0.3s ease;
-}
-
-/* Social button image styles */
-.social-button img {
-    width: 30px;
-    height: 30px;
-    position: relative;
-    z-index: 1;
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    object-fit: contain;
-}
-
-/* Logo colors - controls SVG fill color */
-.social-button.x-profile {
-    color: #1A1A2E; /* Black X */
-}
-/* Make DexScreener logo bigger */
-.social-button.dex img {
-    width: 46px;
-    height: 46px;
-    transform: translateY(1px);
-}
-
-/* Make Telegram bigger */
-.social-button.telegram img {
-    width: 66px;
-    height: 66px;
-    object-position: center;
-    display: block;
-    margin: auto;
-    transform: translateX(-2px);
-}
-
-.social-button.x-profile img {
-    width: 27px;
-    height: 27px;
-}
-
-.social-button.telegram {
-    color: #1A1A2E; /* Black telegram */
-}
-
-.social-button.dex {
-    color: #1A1A2E; /* Black dex */
-}
-
-/* White X for community button */
-.social-button.x-community {
-    background: rgba(255, 255, 255, 0.4) !important;
-}
-
-.social-button.x-community img {
-    width: 27px;
-    height: 27px;
-    filter: brightness(0) invert(1);
-}
-/* ADD these to your existing CSS - won't affect social buttons */
-
-/* Ensure logo stays on top during animation */
+/* Ensure logo is on top layer */
+.speech-bubble-container,
 .thought-bubble {
     position: relative;
-    z-index: 10 !important;
+    z-index: 50 !important;
 }
 
-/* Add animation capability to characters only */
-.jew-character,
-.africa-character {
-    will-change: transform, opacity;
-    transform-origin: center center;
+/* Character wrapper for proper layering */
+.character-wrapper {
+    pointer-events: none;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
 }
 
-/* Prevent any flipping - maintain orientation */
-.africa-character {
-    transform-style: preserve-3d !important;
+/* Ensure characters can go behind and in front */
+.character {
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+}
+
+/* Shadow pulse animation */
+@keyframes shadowPulse {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) scaleX(0.5);
+    }
+    50% {
+        opacity: 0.3;
+        transform: translateX(-50%) scaleX(1.2);
+    }
+    100% {
+        opacity: 0.5;
+        transform: translateX(-50%) scaleX(1);
+    }
+}
+
+/* Ensure black line stays below characters */
+.section-divider {
+    position: relative;
+    z-index: 1;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .character-wrapper {
+        /* Ensure proper positioning on mobile */
+        transform-origin: center center;
+    }
 }
