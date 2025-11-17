@@ -1,5 +1,5 @@
 // Character Animation Script for WELL WELL Website
-// Simple fade-in transitions with fixed positioning on the section divider
+// Enhanced with jump-out-from-behind-logo effect
 
 (function() {
     'use strict';
@@ -10,17 +10,17 @@
     };
 
     const config = {
-        initialDelay: 1000,        // 1 second initial delay
-        sequenceDelay: 500,        // 0.5 seconds between each character
-        fadeInDuration: 800,       // 0.8 second fade-in
-        characterSize: 300,        // 50% bigger than original 200px
-        mobileScale: 0.4,          // 40% size on mobile to prevent glitching
+        initialDelay: 2000,        // Wait for logo to settle
+        sequenceDelay: 400,        // Delay between characters
+        animationDuration: 1500,   // Total animation time
+        characterSize: 450,        // 50% bigger than current 300px
+        mobileScale: 0.4,
         positions: {
-            jew: 0.30,             // 30% from left
-            africa: 0.70           // 70% from left
+            jew: 0.30,
+            africa: 0.70
         },
-        heightOffset: 0.85,        // Multiplier for positioning (0.85 = sits on line, 1.0 = below line)
-        enableMobileFixed: true    // Fix position on mobile to prevent glitching
+        heightOffset: 0.75,        // Higher position above line
+        enableMobileFixed: true
     };
 
     function createCharacter(imagePath, characterType, delay) {
@@ -28,40 +28,49 @@
             const character = document.createElement('div');
             character.className = `character character-${characterType}`;
             
-            // Find the section divider to position characters
             const divider = document.querySelector('.section-divider');
-            if (!divider) {
-                return;
-            }
+            const logo = document.querySelector('.speech-bubble-container, .thought-bubble');
+            
+            if (!divider || !logo) return;
 
             const dividerRect = divider.getBoundingClientRect();
+            const logoRect = logo.getBoundingClientRect();
             const screenWidth = window.innerWidth;
             const isMobile = screenWidth < 768;
             
-            // Calculate size
-            const size = isMobile ? config.characterSize * config.mobileScale : config.characterSize;
+            // Calculate sizes
+            const startSize = 5; // Start almost invisible
+            const finalSize = isMobile ? config.characterSize * config.mobileScale : config.characterSize;
             
-            // Calculate position
-            const xPosition = screenWidth * config.positions[characterType];
-            // Adjusted height calculation with configurable offset
-            const yPosition = dividerRect.top + window.pageYOffset - (size * config.heightOffset);
+            // Calculate positions
+            const logoCenterX = logoRect.left + (logoRect.width / 2);
+            const logoCenterY = logoRect.top + (logoRect.height / 2);
+            
+            // Final positions
+            const finalX = screenWidth * config.positions[characterType];
+            const finalY = dividerRect.top + window.pageYOffset - (finalSize * config.heightOffset);
+            
+            // Create wrapper for proper layering
+            const wrapper = document.createElement('div');
+            wrapper.className = `character-wrapper wrapper-${characterType}`;
+            wrapper.style.cssText = `
+                position: absolute;
+                left: ${logoCenterX}px;
+                top: ${logoCenterY}px;
+                width: ${startSize}px;
+                height: ${startSize}px;
+                z-index: 5;
+                transform: translate(-50%, -50%);
+                will-change: transform, width, height, left, top;
+            `;
 
-            // Set initial styles with fixed positioning for mobile
+            // Set character initial state
             character.style.cssText = `
-                position: ${isMobile && config.enableMobileFixed ? 'fixed' : 'absolute'};
-                width: ${size}px;
-                height: ${size}px;
-                left: ${xPosition - (size / 2)}px;
-                ${isMobile && config.enableMobileFixed ? 
-                    `top: ${dividerRect.top - (size * config.heightOffset)}px;` : 
-                    `top: ${yPosition}px;`}
+                width: 100%;
+                height: 100%;
                 opacity: 0;
-                z-index: 50;
-                pointer-events: none;
-                transition: opacity ${config.fadeInDuration}ms ease-in-out;
-                will-change: opacity;
-                transform-style: preserve-3d;
-                backface-visibility: hidden;
+                transform: scale(1);
+                position: relative;
             `;
 
             // Create and add image
@@ -74,187 +83,157 @@
                 image-rendering: -webkit-optimize-contrast;
             `;
 
-            img.onload = () => {
-                // Trigger fade-in after image loads
-                requestAnimationFrame(() => {
-                    character.style.opacity = '1';
-                });
-            };
-
-            img.onerror = () => {
-                // Create placeholder if image fails
-                character.style.background = 'linear-gradient(135deg, #FF6B6B, #4ECDC4)';
-                character.style.borderRadius = '50%';
-                character.style.opacity = '0.5';
-            };
-            
             character.appendChild(img);
-            document.body.appendChild(character);
+            wrapper.appendChild(character);
+            document.body.appendChild(wrapper);
+
+            // Start the complex animation sequence
+            img.onload = () => {
+                // Phase 1: Peek out (character becomes visible while small)
+                setTimeout(() => {
+                    character.style.transition = 'opacity 200ms ease';
+                    character.style.opacity = '1';
+                }, 100);
+
+                // Phase 2: Jump out animation
+                setTimeout(() => {
+                    // Calculate jump path
+                    const jumpAngle = characterType === 'jew' ? -25 : 25; // Angle of emergence
+                    const jumpDistance = 150; // How far they jump initially
+                    
+                    // Create keyframe animation
+                    const jumpAnimation = `
+                        @keyframes jumpOut${characterType} {
+                            0% {
+                                left: ${logoCenterX}px;
+                                top: ${logoCenterY}px;
+                                width: ${startSize}px;
+                                height: ${startSize}px;
+                                transform: translate(-50%, -50%) rotate(0deg);
+                                z-index: 5;
+                            }
+                            20% {
+                                left: ${logoCenterX + (Math.sin(jumpAngle * Math.PI / 180) * jumpDistance * 0.3)}px;
+                                top: ${logoCenterY + (Math.cos(jumpAngle * Math.PI / 180) * jumpDistance * 0.3)}px;
+                                width: ${finalSize * 0.2}px;
+                                height: ${finalSize * 0.2}px;
+                                transform: translate(-50%, -50%) rotate(${jumpAngle * 0.5}deg);
+                                z-index: 51;
+                            }
+                            40% {
+                                left: ${logoCenterX + (Math.sin(jumpAngle * Math.PI / 180) * jumpDistance)}px;
+                                top: ${logoCenterY + jumpDistance * 0.5}px;
+                                width: ${finalSize * 0.6}px;
+                                height: ${finalSize * 0.6}px;
+                                transform: translate(-50%, -50%) rotate(${jumpAngle}deg);
+                                z-index: 51;
+                            }
+                            60% {
+                                left: ${finalX - (finalSize / 2) + (finalSize / 2)}px;
+                                top: ${finalY - 30}px;
+                                width: ${finalSize * 1.1}px;
+                                height: ${finalSize * 1.1}px;
+                                transform: translate(-50%, -50%) rotate(${-jumpAngle * 0.3}deg);
+                                z-index: 51;
+                            }
+                            80% {
+                                left: ${finalX - (finalSize / 2) + (finalSize / 2)}px;
+                                top: ${finalY + 10}px;
+                                width: ${finalSize * 0.95}px;
+                                height: ${finalSize * 0.95}px;
+                                transform: translate(-50%, -50%) rotate(0deg);
+                                z-index: 51;
+                            }
+                            100% {
+                                left: ${finalX}px;
+                                top: ${finalY}px;
+                                width: ${finalSize}px;
+                                height: ${finalSize}px;
+                                transform: translate(-50%, -50%) rotate(0deg);
+                                z-index: 51;
+                            }
+                        }
+                    `;
+                    
+                    // Inject keyframe animation
+                    const styleSheet = document.createElement('style');
+                    styleSheet.textContent = jumpAnimation;
+                    document.head.appendChild(styleSheet);
+                    
+                    // Apply animation to wrapper
+                    wrapper.style.animation = `jumpOut${characterType} ${config.animationDuration}ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards`;
+                    
+                    // Add bouncing shadow
+                    const shadow = document.createElement('div');
+                    shadow.className = 'character-shadow';
+                    shadow.style.cssText = `
+                        position: absolute;
+                        bottom: -10px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        width: 60%;
+                        height: 15px;
+                        background: radial-gradient(ellipse at center, rgba(0,0,0,0.2) 0%, transparent 70%);
+                        opacity: 0;
+                        animation: shadowPulse ${config.animationDuration}ms ease-out forwards;
+                    `;
+                    wrapper.appendChild(shadow);
+                    
+                }, 300);
+                
+                // Phase 3: Final positioning (after animation completes)
+                setTimeout(() => {
+                    wrapper.style.animation = '';
+                    wrapper.style.cssText = `
+                        position: ${isMobile && config.enableMobileFixed ? 'fixed' : 'absolute'};
+                        left: ${finalX}px;
+                        top: ${isMobile && config.enableMobileFixed ? dividerRect.top - (finalSize * config.heightOffset) : finalY}px;
+                        width: ${finalSize}px;
+                        height: ${finalSize}px;
+                        transform: translate(-50%, -50%);
+                        z-index: 51;
+                        transition: transform 0.3s ease;
+                    `;
+                    
+                    // Add hover effect
+                    wrapper.addEventListener('mouseenter', () => {
+                        wrapper.style.transform = 'translate(-50%, -50%) scale(1.05) translateY(-5px)';
+                    });
+                    
+                    wrapper.addEventListener('mouseleave', () => {
+                        wrapper.style.transform = 'translate(-50%, -50%) scale(1)';
+                    });
+                    
+                }, config.animationDuration + 300);
+            };
         }, delay);
     }
 
-    function updateCharacterPositions() {
-        const divider = document.querySelector('.section-divider');
-        if (!divider) return;
-
-        const dividerRect = divider.getBoundingClientRect();
-        const screenWidth = window.innerWidth;
-        const isMobile = screenWidth < 768;
-        const size = isMobile ? config.characterSize * config.mobileScale : config.characterSize;
-
-        document.querySelectorAll('.character').forEach(character => {
-            const characterType = character.className.split('character-')[1];
-            if (characterType && config.positions[characterType]) {
-                const xPosition = screenWidth * config.positions[characterType];
-                
-                character.style.width = `${size}px`;
-                character.style.height = `${size}px`;
-                character.style.left = `${xPosition - (size / 2)}px`;
-                
-                if (isMobile && config.enableMobileFixed) {
-                    // Use fixed positioning on mobile
-                    character.style.position = 'fixed';
-                    character.style.top = `${dividerRect.top - (size * config.heightOffset)}px`;
-                } else {
-                    // Use absolute positioning on desktop
-                    character.style.position = 'absolute';
-                    const yPosition = dividerRect.top + window.pageYOffset - (size * config.heightOffset);
-                    character.style.top = `${yPosition}px`;
-                }
-            }
-        });
-    }
-
     function startSequence() {
-        // Create characters with staggered delays
         createCharacter(characterImages.jew, 'jew', config.initialDelay);
         createCharacter(characterImages.africa, 'africa', config.initialDelay + config.sequenceDelay);
     }
 
     function init() {
-        // Wait for DOM to be ready
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', startSequence);
         } else {
             startSequence();
         }
-
-        // Update positions on scroll and resize
-        let scrollTimer;
-        window.addEventListener('scroll', () => {
-            clearTimeout(scrollTimer);
-            scrollTimer = setTimeout(updateCharacterPositions, 100);
-        });
-
-        window.addEventListener('resize', () => {
-            updateCharacterPositions();
-        });
     }
 
-    // Initialize
     init();
 
     // Expose API for testing
     window.CharacterAnimation = {
         config: config,
         restart: function() {
-            // Remove existing characters
-            document.querySelectorAll('.character').forEach(c => c.remove());
-            // Restart sequence
+            document.querySelectorAll('.character-wrapper').forEach(c => c.remove());
+            document.querySelectorAll('style').forEach(s => {
+                if (s.textContent.includes('jumpOut')) s.remove();
+            });
             startSequence();
-        },
-        setDelay: function(initial, sequence) {
-            config.initialDelay = initial;
-            config.sequenceDelay = sequence;
-            this.restart();
-        },
-        setSize: function(size) {
-            config.characterSize = size;
-            updateCharacterPositions();
-        },
-        setHeightOffset: function(offset) {
-            // Offset controls how high characters sit
-            // 0.5 = halfway up their height above line
-            // 0.85 = mostly on the line
-            // 1.0 = bottom touches line
-            config.heightOffset = offset;
-            updateCharacterPositions();
-        },
-        setMobileScale: function(scale) {
-            config.mobileScale = scale;
-            updateCharacterPositions();
-        },
-        toggleMobileFixed: function(enable) {
-            config.enableMobileFixed = enable;
-            updateCharacterPositions();
         }
     };
 
 })();
-// ADD this new function at the END of your existing JS file
-// This won't interfere with your social media buttons
-
-function initCharacterAnimations() {
-    const jewCharacter = document.querySelector('.jew-character'); // Update with your actual class
-    const africaCharacter = document.querySelector('.africa-character'); // Update with your actual class
-    
-    if (!jewCharacter || !africaCharacter) return;
-    
-    // Store original positions first
-    const jewOriginal = jewCharacter.getBoundingClientRect();
-    const africaOriginal = africaCharacter.getBoundingClientRect();
-    
-    // Get logo center for hiding position
-    const logo = document.querySelector('.thought-bubble'); // Update with your logo class
-    if (!logo) return;
-    
-    const logoRect = logo.getBoundingClientRect();
-    const logoCenterX = logoRect.left + logoRect.width / 2;
-    const logoCenterY = logoRect.top + logoRect.height / 2;
-    
-    // Setup initial hidden state
-    jewCharacter.style.cssText += `
-        position: fixed !important;
-        left: ${logoCenterX}px !important;
-        top: ${logoCenterY}px !important;
-        transform: translate(-50%, -50%) scale(0.01) !important;
-        opacity: 0 !important;
-        z-index: 1 !important;
-        transition: none !important;
-    `;
-    
-    africaCharacter.style.cssText += `
-        position: fixed !important;
-        left: ${logoCenterX}px !important;
-        top: ${logoCenterY}px !important;
-        transform: translate(-50%, -50%) scale(0.01) !important;
-        opacity: 0 !important;
-        z-index: 1 !important;
-        transition: none !important;
-    `;
-    
-    // Start animations after logo settles
-    setTimeout(() => {
-        animateCharacterOut(jewCharacter, jewOriginal.left - 50, jewOriginal.top - 30, 0);
-        animateCharacterOut(africaCharacter, africaOriginal.left + 50, africaOriginal.top - 30, 400);
-    }, 2500);
-}
-
-function animateCharacterOut(character, finalX, finalY, delay) {
-    setTimeout(() => {
-        character.style.transition = 'all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1)';
-        character.style.left = `${finalX}px`;
-        character.style.top = `${finalY}px`;
-        character.style.transform = 'translate(0, 0) scale(1.5)';
-        character.style.opacity = '1';
-        character.style.zIndex = '5';
-    }, delay);
-}
-
-// ADD this single line to trigger the animation when page loads
-// Put this at the very end of your file
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initCharacterAnimations);
-} else {
-    initCharacterAnimations();
-}
