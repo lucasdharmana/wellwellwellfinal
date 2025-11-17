@@ -62,3 +62,22 @@
     height: 27px;
     filter: brightness(0) invert(1);
 }
+/* ADD these to your existing CSS - won't affect social buttons */
+
+/* Ensure logo stays on top during animation */
+.thought-bubble {
+    position: relative;
+    z-index: 10 !important;
+}
+
+/* Add animation capability to characters only */
+.jew-character,
+.africa-character {
+    will-change: transform, opacity;
+    transform-origin: center center;
+}
+
+/* Prevent any flipping - maintain orientation */
+.africa-character {
+    transform-style: preserve-3d !important;
+}
