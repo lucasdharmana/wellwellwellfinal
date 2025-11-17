@@ -191,3 +191,70 @@
     };
 
 })();
+// ADD this new function at the END of your existing JS file
+// This won't interfere with your social media buttons
+
+function initCharacterAnimations() {
+    const jewCharacter = document.querySelector('.jew-character'); // Update with your actual class
+    const africaCharacter = document.querySelector('.africa-character'); // Update with your actual class
+    
+    if (!jewCharacter || !africaCharacter) return;
+    
+    // Store original positions first
+    const jewOriginal = jewCharacter.getBoundingClientRect();
+    const africaOriginal = africaCharacter.getBoundingClientRect();
+    
+    // Get logo center for hiding position
+    const logo = document.querySelector('.thought-bubble'); // Update with your logo class
+    if (!logo) return;
+    
+    const logoRect = logo.getBoundingClientRect();
+    const logoCenterX = logoRect.left + logoRect.width / 2;
+    const logoCenterY = logoRect.top + logoRect.height / 2;
+    
+    // Setup initial hidden state
+    jewCharacter.style.cssText += `
+        position: fixed !important;
+        left: ${logoCenterX}px !important;
+        top: ${logoCenterY}px !important;
+        transform: translate(-50%, -50%) scale(0.01) !important;
+        opacity: 0 !important;
+        z-index: 1 !important;
+        transition: none !important;
+    `;
+    
+    africaCharacter.style.cssText += `
+        position: fixed !important;
+        left: ${logoCenterX}px !important;
+        top: ${logoCenterY}px !important;
+        transform: translate(-50%, -50%) scale(0.01) !important;
+        opacity: 0 !important;
+        z-index: 1 !important;
+        transition: none !important;
+    `;
+    
+    // Start animations after logo settles
+    setTimeout(() => {
+        animateCharacterOut(jewCharacter, jewOriginal.left - 50, jewOriginal.top - 30, 0);
+        animateCharacterOut(africaCharacter, africaOriginal.left + 50, africaOriginal.top - 30, 400);
+    }, 2500);
+}
+
+function animateCharacterOut(character, finalX, finalY, delay) {
+    setTimeout(() => {
+        character.style.transition = 'all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        character.style.left = `${finalX}px`;
+        character.style.top = `${finalY}px`;
+        character.style.transform = 'translate(0, 0) scale(1.5)';
+        character.style.opacity = '1';
+        character.style.zIndex = '5';
+    }, delay);
+}
+
+// ADD this single line to trigger the animation when page loads
+// Put this at the very end of your file
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCharacterAnimations);
+} else {
+    initCharacterAnimations();
+}
