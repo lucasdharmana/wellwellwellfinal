@@ -37,19 +37,22 @@
             const isMobile = screenWidth < 768;
             
             // Size calculations
-            const startSize = 3;
-            const finalSize = isMobile ? config.characterSize * config.mobileScale : config.characterSize;
-            
-            // Logo center - where they hide
-            const logoCenterX = logoRect.left + logoRect.width / 2 + window.pageXOffset;
-            const logoCenterY = logoRect.top + logoRect.height / 2 + window.pageYOffset;
-            
-            // Final positions - BELOW the logo, ABOVE the black line
-            const finalX = screenWidth * config.positions[characterType];
-            // KEY FIX: Position them between logo bottom and divider line
-            const logoBottom = logoRect.bottom + window.pageYOffset;
-            const dividerTop = dividerRect.top + window.pageYOffset;
-            const finalY = dividerTop - (finalSize * config.heightOffset);
+            // Size calculations
+const startSize = 3;
+const finalSize = isMobile ? config.characterSize * 0.625 : config.characterSize; // Mobile 25% bigger
+
+// Logo center - where they hide
+const logoCenterX = logoRect.left + logoRect.width / 2 + window.pageXOffset;
+const logoCenterY = logoRect.top + logoRect.height / 2 + window.pageYOffset;
+
+// Final positions - different for mobile vs desktop
+const finalX = screenWidth * config.positions[characterType];
+const dividerTop = dividerRect.top + window.pageYOffset;
+
+// Desktop: closer to black line (inside circles), Mobile: current position
+const finalY = isMobile 
+    ? dividerTop - (finalSize * 0.85)  // Mobile stays where it is
+    : dividerTop - (finalSize * 0.35); // Desktop - CHANGE 0.35 to move them up/down
             
             // Create wrapper
             const wrapper = document.createElement('div');
