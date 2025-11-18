@@ -1,8 +1,9 @@
 /* Enhanced Character Animation Styles */
 
-/* Ensure logo is on top layer */
+/* Ensure logo is on top layer - FIXED SELECTOR */
 .speech-bubble-container,
-.thought-bubble {
+.thought-bubble,
+.speech-bubble {
     position: relative;
     z-index: 50 !important;
 }
@@ -12,6 +13,7 @@
     pointer-events: none;
     transform-style: preserve-3d;
     backface-visibility: hidden;
+    transform-origin: center center;
 }
 
 /* Ensure characters can go behind and in front */
@@ -20,7 +22,17 @@
     backface-visibility: hidden;
 }
 
-/* Shadow pulse animation */
+/* Character breathing animation - added by JS */
+@keyframes characterBreathe {
+    0%, 100% { 
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% { 
+        transform: translate(-50%, -50%) scale(1.02);
+    }
+}
+
+/* Shadow pulse animation (if you add shadows later) */
 @keyframes shadowPulse {
     0% {
         opacity: 0;
@@ -45,7 +57,6 @@
 /* Mobile adjustments */
 @media (max-width: 768px) {
     .character-wrapper {
-        /* Ensure proper positioning on mobile */
         transform-origin: center center;
     }
 }
