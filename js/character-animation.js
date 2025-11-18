@@ -50,9 +50,12 @@ const finalX = screenWidth * config.positions[characterType];
 const dividerTop = dividerRect.top + window.pageYOffset;
 
 // Desktop: closer to black line (inside circles), Mobile: current position
+// Africa needs to be slightly higher to align with Jew
+const desktopOffset = characterType === 'africa' ? 0.37 : 0.35;
+
 const finalY = isMobile 
     ? dividerTop - (finalSize * 0.85)  // Mobile stays where it is
-    : dividerTop - (finalSize * 0.35); // Desktop - CHANGE 0.35 to move them up/down
+    : dividerTop - (finalSize * desktopOffset); // Desktop positioning
             
             // Create wrapper
             const wrapper = document.createElement('div');
