@@ -8,16 +8,16 @@
     };
 
     const config = {
-        initialDelay: 1500,        // Wait for page to settle
-        sequenceDelay: 600,        // Delay between characters (jew first, then africa)
-        animationDuration: 1200,   // Duration of jump-out animation
-        characterSize: 450,        // 50% bigger than original 300px
-        mobileScale: 0.4,
+        initialDelay: 1500,
+        sequenceDelay: 600,
+        animationDuration: 1200,
+        characterSize: 450,        // Desktop size
+        mobileScale: 0.5,          // Mobile 25% bigger (was 0.4)
         positions: {
-            jew: 0.30,             // Left character
-            africa: 0.70           // Right character
+            jew: 0.30,
+            africa: 0.70
         },
-        heightOffset: 0.85,        // Higher above the line
+        heightOffset: 0.75,        // Position below logo
         enableMobileFixed: true
     };
 
@@ -37,16 +37,19 @@
             const isMobile = screenWidth < 768;
             
             // Size calculations
-            const startSize = 3; // Nearly invisible
+            const startSize = 3;
             const finalSize = isMobile ? config.characterSize * config.mobileScale : config.characterSize;
             
             // Logo center - where they hide
             const logoCenterX = logoRect.left + logoRect.width / 2 + window.pageXOffset;
             const logoCenterY = logoRect.top + logoRect.height / 2 + window.pageYOffset;
             
-            // Final landing positions - higher above the line
+            // Final positions - BELOW the logo, ABOVE the black line
             const finalX = screenWidth * config.positions[characterType];
-            const finalY = dividerRect.top + window.pageYOffset - (finalSize * config.heightOffset);
+            // KEY FIX: Position them between logo bottom and divider line
+            const logoBottom = logoRect.bottom + window.pageYOffset;
+            const dividerTop = dividerRect.top + window.pageYOffset;
+            const finalY = dividerTop - (finalSize * config.heightOffset);
             
             // Create wrapper
             const wrapper = document.createElement('div');
@@ -96,14 +99,8 @@
                     wrapper.style.opacity = '1';
                 }, 50);
 
-                // Phase 2: JUMP OUT - emerge from behind logo
+                // Phase 2: JUMP OUT - emerge from behind logo at 45° angle
                 setTimeout(() => {
-                    // Calculate 45-degree diagonal path
-                    // Move right and down simultaneously
-                    const horizontalDistance = finalX - logoCenterX;
-                    const verticalDistance = finalY - logoCenterY;
-                    
-                    // Bring to front and start moving
                     wrapper.style.zIndex = '51';
                     wrapper.style.transition = `
                         left ${config.animationDuration}ms cubic-bezier(0.34, 1.2, 0.64, 1),
@@ -113,7 +110,7 @@
                         opacity 200ms ease-out
                     `;
                     
-                    // Jump to final position with scaling
+                    // Jump to final position
                     wrapper.style.left = finalX + 'px';
                     wrapper.style.top = finalY + 'px';
                     wrapper.style.width = finalSize + 'px';
@@ -126,7 +123,6 @@
                     wrapper.style.transition = 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
                     wrapper.style.pointerEvents = 'auto';
                     
-                    // Add "alive" hover effect
                     wrapper.addEventListener('mouseenter', () => {
                         wrapper.style.transform = 'translate(-50%, -50%) scale(1.08) translateY(-8px)';
                     });
@@ -135,12 +131,10 @@
                         wrapper.style.transform = 'translate(-50%, -50%) scale(1)';
                     });
                     
-                    // Add subtle breathing animation
                     wrapper.style.animation = 'characterBreathe 3s ease-in-out infinite';
                 }, config.animationDuration + 300);
             };
 
-            // Error handling
             img.onerror = () => {
                 console.error(`Failed to load character image: ${imagePath}`);
             };
@@ -148,7 +142,6 @@
         }, delay);
     }
 
-    // Add breathing keyframes to document
     function injectStyles() {
         const style = document.createElement('style');
         style.textContent = `
@@ -166,9 +159,7 @@
 
     function startSequence() {
         injectStyles();
-        // Jew appears first
         createCharacter(characterImages.jew, 'jew', config.initialDelay);
-        // Africa follows
         createCharacter(characterImages.africa, 'africa', config.initialDelay + config.sequenceDelay);
     }
 
@@ -182,7 +173,6 @@
 
     init();
 
-    // Debug API
     window.CharacterAnimation = {
         config: config,
         restart: function() {
