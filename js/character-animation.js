@@ -20,8 +20,8 @@
             africa: 1.0
         },
         positions: {
-            jew: 0.15,                // PDF fix: further apart (was 0.30)
-            africa: 0.85              // PDF fix: further apart (was 0.70)
+            jew: 0.18,                // Adjusted for max-width calculation
+            africa: 0.82
         },
         heightOffset: 0.55            // PDF fix: higher position (was 0.85, lower = higher)
     };
@@ -53,8 +53,11 @@
                 : logoRect.left + (logoRect.width / 2) + bubbleEdgeOffset;
             const startY = logoRect.top + (logoRect.height * 0.65);
 
-            // END position: use original positioning logic exactly
-            const finalX = screenWidth * config.positions[characterType];
+            // END position: use max content width to prevent characters going too far out
+            const maxContentWidth = 1400;  // Same as site's max-width
+            const effectiveWidth = Math.min(screenWidth, maxContentWidth);
+            const offsetX = (screenWidth - effectiveWidth) / 2;  // Center offset
+            const finalX = offsetX + (effectiveWidth * config.positions[characterType]);
             const finalY = dividerRect.top + window.pageYOffset - (finalSize * config.heightOffset);
             
             const wrapper = document.createElement('div');
