@@ -14,11 +14,17 @@
             box-sizing: border-box;
         }
         
+        /* FIX 9: Prevent bottom color bleed */
+        html {
+            background: #FFE4C4;
+        }
+        
         body {
             font-family: 'Space Grotesk', sans-serif;
             background: linear-gradient(180deg, #FFF8E7 0%, #FFE4C4 100%);
             overflow-x: hidden;
             position: relative;
+            min-height: 100vh;
         }
 
         /* Popup Overlay */
@@ -33,7 +39,7 @@
             display: none;
             opacity: 0;
             transition: opacity 0.3s ease;
-            cursor: pointer; /* Make overlay clickable */
+            cursor: pointer;
         }
 
         .popup-overlay.active {
@@ -58,10 +64,9 @@
             border: 1px solid #e8e5dc;
             border-radius: 3px;
             animation: paperDrop 0.5s ease-out;
-            cursor: auto; /* Prevent closing when clicking on note */
+            cursor: auto;
         }
 
-        /* Remove decorative elements */
         .paper-note::before,
         .paper-note::after {
             display: none;
@@ -105,7 +110,6 @@
             transform: rotate(90deg);
         }
         
-        /* Mobile optimizations for popup */
         @media (max-width: 768px) {
             .paper-note {
                 max-width: 85%;
@@ -398,20 +402,18 @@
             animation: bubbleFloat 6s ease-in-out infinite 0.6s;
         }
         
-        /* Mobile specific adjustments */
         @media (max-width: 768px) {
             .logo-container {
-                padding-left: 50px; /* Reduce padding on mobile */
+                padding-left: 50px;
             }
             
             .speech-bubble {
                 padding: 30px 50px;
-                /* Maintain the organic bubble shape on mobile */
                 border-radius: 70% 60% 65% 75% / 60% 70% 65% 75%;
             }
             
             .thought-trail {
-                left: 15px; /* Bring dots closer on mobile */
+                left: 15px;
             }
             
             .thought-bubble-small:nth-child(1) {
@@ -423,13 +425,13 @@
             .thought-bubble-small:nth-child(2) {
                 width: 18px;
                 height: 18px;
-                left: -20px; /* Closer spacing */
+                left: -20px;
             }
             
             .thought-bubble-small:nth-child(3) {
                 width: 12px;
                 height: 12px;
-                left: -32px; /* Closer spacing */
+                left: -32px;
             }
         }
         
@@ -451,17 +453,19 @@
             margin: 20px 0 0 0;
             position: relative;
         }
-/* Featured In Subheading */
-.featured-subheading {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 36px;
-    color: #1A1A2E;
-    letter-spacing: 4px;
-    text-align: center;
-    padding: 25px 0 15px 0;
-    background: linear-gradient(180deg, #FFF8E7 0%, #FFE4C4 100%);
-}
-        /* Live News Ticker - Now below navigation */
+
+        /* FIX 6: Featured In Subheading - transparent background to prevent two-tone effect */
+        .featured-subheading {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 36px;
+            color: #1A1A2E;
+            letter-spacing: 4px;
+            text-align: center;
+            padding: 25px 0 15px 0;
+            background: transparent;
+        }
+
+        /* Live News Ticker */
         .live-ticker {
             background: #DC143C;
             color: white;
@@ -833,9 +837,9 @@
             object-fit: cover;
         }
         
-        /* Social Footer */
+        /* FIX 9: Social Footer - transparent background */
         .social-footer {
-            background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(26, 26, 46, 0.3) 100%);
+            background: transparent;
             padding: 60px 20px;
             text-align: center;
             margin-top: 80px;
@@ -960,7 +964,6 @@
             transform: scale(1.15) rotate(5deg);
         }
 
-        /* Individual button hover colors */
         .social-button.x-profile:hover,
         .social-button.x-community:hover {
             border-color: #1A1A2E;
@@ -995,6 +998,24 @@
             font-size: 28px;
         }
         
+        /* PFP Generator Section Styles */
+        .pfp-generator-container {
+            background: white;
+            border: 4px solid #1A1A2E;
+            padding: 40px;
+            text-align: center;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .pfp-generator-container .article-excerpt {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        
         /* Responsive Design */
         @media (max-width: 1200px) {
             .home-layout {
@@ -1011,10 +1032,9 @@
         }
 
         @media (max-width: 768px) {
-            /* Fixed navigation on mobile */
             .category-nav {
                 position: fixed;
-                top: 29px; /* After satire banner */
+                top: 29px;
                 left: 0;
                 right: 0;
                 z-index: 100;
@@ -1030,11 +1050,11 @@
                 min-width: max-content;
                 overflow-x: auto;
                 overflow-y: hidden;
-                scrollbar-width: none; /* Hide scrollbar */
+                scrollbar-width: none;
             }
             
             .category-container::-webkit-scrollbar {
-                display: none; /* Hide scrollbar */
+                display: none;
             }
 
             .category-btn {
@@ -1044,12 +1064,10 @@
                 white-space: nowrap;
             }
             
-            /* Add padding to account for fixed headers */
             .live-ticker {
-                margin-top: 75px; /* Height of satire banner + nav */
+                margin-top: 75px;
             }
             
-            /* Add padding to content to account for fixed nav */
             .hero-wrapper {
                 padding-top: 20px;
             }
@@ -1141,19 +1159,20 @@
             ⚠ SATIRE - CLICK FOR IMPORTANT INFORMATION ⚠
         </div>
 
-        <!-- Category Navigation -->
+        <!-- FIX 10-12: Category Navigation - Reordered with new sections -->
         <div class="category-nav">
             <div class="category-container">
-                <button class="category-btn active" onclick="showSection('home')">HOME</button>
-                <button class="category-btn" onclick="showSection('videos')">VIDEOS</button>
-                <button class="category-btn" onclick="showSection('articles')">ARTICLES</button>
-                <button class="category-btn" onclick="showSection('collabs')">COLLABS</button>
-                <button class="category-btn" onclick="showSection('chatgpt')">CHATGPT</button>
+                <button class="category-btn active" data-section="home" onclick="showSection('home', this)">HOME</button>
+                <button class="category-btn" data-section="videos" onclick="showSection('videos', this)">VIDEOS</button>
+                <button class="category-btn" data-section="articles" onclick="showSection('articles', this)">ARTICLES</button>
+                <button class="category-btn" data-section="chatjpt" onclick="showSection('chatjpt', this)">CHATJPT</button>
+                <button class="category-btn" data-section="pfp" onclick="showSection('pfp', this)">PFP GENERATOR</button>
+                <button class="category-btn" data-section="collabs" onclick="showSection('collabs', this)">COLLABS</button>
                 <button class="category-btn" onclick="scrollToAbout()">ABOUT US</button>
             </div>
         </div>
 
-        <!-- Live Ticker - Now positioned after navigation -->
+        <!-- Live Ticker -->
         <div class="live-ticker">
             <div class="live-badge">LIVE</div>
             <div class="ticker-content">
@@ -1189,15 +1208,10 @@
 
         <!-- Section Divider where characters will appear -->
         <div class="section-divider"></div>
-<!-- Section Divider where characters will appear -->
-<div class="section-divider"></div>
 
-<!-- Featured In Subheading -->
-<div class="featured-subheading">FEATURED IN</div>
+        <!-- Featured In Subheading -->
+        <div class="featured-subheading">FEATURED</div>
 
-<!-- HOME Section -->
-<div id="home" class="content-section active">
-    <!-- Banner Section -->
         <!-- HOME Section -->
         <div id="home" class="content-section active">
             <!-- Banner Section -->
@@ -1339,31 +1353,13 @@
         <!-- ARTICLES Section -->
         <div id="articles" class="content-section">
             <h2 class="featured-title">All Articles</h2>
-            <!-- Filters and search will be added dynamically by article-manager.js -->
             <div class="articles-grid">
                 <!-- Articles will be loaded dynamically here -->
             </div>
-            <!-- Load more button will be added dynamically -->
         </div>
 
-        <!-- COLLABS Section -->
-        <div id="collabs" class="content-section">
-            <h2 class="featured-title">Collaborations</h2>
-            <div class="photo-gallery">
-                <div class="photo-item">
-                    <img src="placeholder.jpg" alt="Collab 1" onerror="this.style.background='linear-gradient(135deg, #4ECDC4, #FF6B6B)'; this.style.height='300px';">
-                </div>
-                <div class="photo-item">
-                    <img src="placeholder.jpg" alt="Collab 2" onerror="this.style.background='linear-gradient(135deg, #FF6B6B, #FFE66D)'; this.style.height='300px';">
-                </div>
-                <div class="photo-item">
-                    <img src="placeholder.jpg" alt="Collab 3" onerror="this.style.background='linear-gradient(135deg, #FFE66D, #4ECDC4)'; this.style.height='300px';">
-                </div>
-            </div>
-        </div>
-
-        <!-- CHATGPT Section -->
-        <div id="chatgpt" class="content-section">
+        <!-- CHATJPT Section (renamed from chatgpt) -->
+        <div id="chatjpt" class="content-section">
             <h2 class="featured-title">AI Generated Content</h2>
             <div class="articles-grid">
                 <div class="article-card">
@@ -1381,6 +1377,31 @@
                         <h3 class="article-title">AI Predicts Market Will Either Go Up or Down</h3>
                         <p class="article-excerpt">Revolutionary algorithm achieves 50% accuracy rate.</p>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FIX 12: PFP GENERATOR Section (NEW) -->
+        <div id="pfp" class="content-section">
+            <h2 class="featured-title">PFP Generator</h2>
+            <div class="pfp-generator-container">
+                <p class="article-excerpt">Generate your unique $WELLWELL profile picture.</p>
+                <p class="article-excerpt" style="font-size: 24px; margin-top: 20px;">🚧 Coming Soon... 🚧</p>
+            </div>
+        </div>
+
+        <!-- COLLABS Section -->
+        <div id="collabs" class="content-section">
+            <h2 class="featured-title">Collaborations</h2>
+            <div class="photo-gallery">
+                <div class="photo-item">
+                    <img src="placeholder.jpg" alt="Collab 1" onerror="this.style.background='linear-gradient(135deg, #4ECDC4, #FF6B6B)'; this.style.height='300px';">
+                </div>
+                <div class="photo-item">
+                    <img src="placeholder.jpg" alt="Collab 2" onerror="this.style.background='linear-gradient(135deg, #FF6B6B, #FFE66D)'; this.style.height='300px';">
+                </div>
+                <div class="photo-item">
+                    <img src="placeholder.jpg" alt="Collab 3" onerror="this.style.background='linear-gradient(135deg, #FFE66D, #4ECDC4)'; this.style.height='300px';">
                 </div>
             </div>
         </div>
@@ -1433,24 +1454,64 @@
             document.getElementById('satirPopup').classList.remove('active');
         }
 
-        function showSection(sectionId) {
+        // FIX 10: Updated showSection with hash routing support
+        function showSection(sectionId, buttonEl) {
             // Hide all sections
             document.querySelectorAll('.content-section').forEach(section => {
                 section.classList.remove('active');
             });
             
             // Show selected section
-            document.getElementById(sectionId).classList.add('active');
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
             
             // Update active button
             document.querySelectorAll('.category-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
-            event.target.classList.add('active');
+            
+            // Set active on clicked button or find matching button
+            if (buttonEl) {
+                buttonEl.classList.add('active');
+            } else {
+                const matchingBtn = document.querySelector(`.category-btn[data-section="${sectionId}"]`);
+                if (matchingBtn) {
+                    matchingBtn.classList.add('active');
+                }
+            }
+            
+            // Update URL hash without triggering scroll
+            if (history.pushState) {
+                history.pushState(null, null, '#/' + sectionId);
+            } else {
+                window.location.hash = '#/' + sectionId;
+            }
         }
 
         function scrollToAbout() {
             document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function openArticle(articleId) {
+            // Placeholder for article opening functionality
+            console.log('Opening article:', articleId);
+        }
+
+        // FIX 10: Handle URL hash routing
+        function handleRoute() {
+            const hash = window.location.hash.replace('#/', '') || 'home';
+            if (hash === 'about') {
+                scrollToAbout();
+            } else {
+                const section = document.getElementById(hash);
+                if (section) {
+                    showSection(hash);
+                } else {
+                    showSection('home');
+                }
+            }
         }
         
         // Initialize when DOM is ready
@@ -1472,7 +1533,13 @@
                     e.stopPropagation();
                 });
             }
+
+            // Handle initial route
+            handleRoute();
         });
+
+        // Listen for hash changes (back/forward navigation)
+        window.addEventListener('hashchange', handleRoute);
     </script>
     <script src="js/character-animation.js"></script>
 </body>
