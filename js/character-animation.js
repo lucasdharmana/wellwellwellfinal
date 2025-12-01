@@ -1,4 +1,6 @@
-// Character Animation Script - Surprise Jump Effect
+// Character Animation Script - Jump from Logo with Correct Positioning
+// Positioning based on original working code, animation jumps from speech bubble
+
 (function() {
     'use strict';
 
@@ -11,14 +13,17 @@
         initialDelay: 1500,
         sequenceDelay: 600,
         animationDuration: 1200,
-        characterSize: 450,        // Desktop size
-        mobileScale: 0.5,          // Mobile 25% bigger (was 0.4)
-        positions: {
-            jew: 0.30,
-            africa: 0.70
+        characterSize: 300,           // Same as original
+        mobileScale: 0.4,             // Same as original
+        scales: {
+            jew: 0.85,                // PDF fix: scale down to match Africa's height
+            africa: 1.0
         },
-        heightOffset: 0.75,        // Position below logo
-        enableMobileFixed: true
+        positions: {
+            jew: 0.15,                // PDF fix: further apart (was 0.30)
+            africa: 0.85              // PDF fix: further apart (was 0.70)
+        },
+        heightOffset: 0.55            // PDF fix: higher position (was 0.85, lower = higher)
     };
 
     function createCharacter(imagePath, characterType, delay) {
@@ -36,53 +41,36 @@
             const screenWidth = window.innerWidth;
             const isMobile = screenWidth < 768;
             
-            // Size calculations
-            // Size calculations
-const startSize = 3;
-const finalSize = isMobile ? config.characterSize * 0.625 : config.characterSize; // Mobile 25% bigger
+            // Calculate sizes (same logic as original)
+            const baseSize = isMobile ? config.characterSize * config.mobileScale : config.characterSize;
+            const finalSize = baseSize * (config.scales[characterType] || 1.0);
+            const startSize = 5;
 
-// Logo center - where they hide
-const logoCenterX = logoRect.left + logoRect.width / 2 + window.pageXOffset;
-const logoCenterY = logoRect.top + logoRect.height / 2 + window.pageYOffset;
+            // START position: emerge from bubble edges (PDF fix)
+            const bubbleEdgeOffset = logoRect.width * 0.35;
+            const startX = characterType === 'jew' 
+                ? logoRect.left + (logoRect.width / 2) - bubbleEdgeOffset
+                : logoRect.left + (logoRect.width / 2) + bubbleEdgeOffset;
+            const startY = logoRect.top + (logoRect.height * 0.65);
 
-// Final positions - different for mobile vs desktop
-const finalX = screenWidth * config.positions[characterType];
-const dividerTop = dividerRect.top + window.pageYOffset;
-
-// Desktop: closer to black line (inside circles), Mobile: current position
-// Africa needs to be slightly higher to align with Jew
-const desktopOffset = characterType === 'africa' ? 0.39 : 0.35;
-
-const finalY = isMobile 
-    ? dividerTop - (finalSize * 0.85)  // Mobile stays where it is
-    : dividerTop - (finalSize * desktopOffset); // Desktop positioning
+            // END position: use original positioning logic exactly
+            const finalX = screenWidth * config.positions[characterType];
+            const finalY = dividerRect.top + window.pageYOffset - (finalSize * config.heightOffset);
             
-            // Create wrapper
             const wrapper = document.createElement('div');
             wrapper.className = `character-wrapper wrapper-${characterType}`;
             wrapper.style.cssText = `
                 position: absolute;
-                left: ${logoCenterX}px;
-                top: ${logoCenterY}px;
+                left: ${startX}px;
+                top: ${startY + window.pageYOffset}px;
                 width: ${startSize}px;
                 height: ${startSize}px;
                 transform: translate(-50%, -50%);
                 z-index: 5;
                 opacity: 0;
-                will-change: transform, left, top, width, height, opacity;
                 pointer-events: none;
             `;
 
-            // Create character container
-            const character = document.createElement('div');
-            character.className = `character character-${characterType}`;
-            character.style.cssText = `
-                width: 100%;
-                height: 100%;
-                position: relative;
-            `;
-
-            // Create image
             const img = document.createElement('img');
             img.src = imagePath;
             img.alt = characterType;
@@ -90,61 +78,40 @@ const finalY = isMobile
                 width: 100%;
                 height: 100%;
                 object-fit: contain;
-                display: block;
             `;
 
-            character.appendChild(img);
-            wrapper.appendChild(character);
+            wrapper.appendChild(img);
             document.body.appendChild(wrapper);
 
-            // Animation starts when image loads
             img.onload = () => {
-                // Phase 1: Pop into visibility (still behind logo)
+                // Fade in
                 setTimeout(() => {
                     wrapper.style.transition = 'opacity 150ms ease-out';
                     wrapper.style.opacity = '1';
                 }, 50);
 
-                // Phase 2: JUMP OUT - emerge from behind logo at 45° angle
+                // Animate to final position
                 setTimeout(() => {
-                    wrapper.style.zIndex = '51';
+                    wrapper.style.zIndex = '45';  // PDF fix: under nav (z-index 100)
                     wrapper.style.transition = `
                         left ${config.animationDuration}ms cubic-bezier(0.34, 1.2, 0.64, 1),
                         top ${config.animationDuration}ms cubic-bezier(0.34, 1.2, 0.64, 1),
                         width ${config.animationDuration}ms cubic-bezier(0.22, 1, 0.36, 1),
-                        height ${config.animationDuration}ms cubic-bezier(0.22, 1, 0.36, 1),
-                        opacity 200ms ease-out
+                        height ${config.animationDuration}ms cubic-bezier(0.22, 1, 0.36, 1)
                     `;
                     
-                    // Jump to final position
                     wrapper.style.left = finalX + 'px';
                     wrapper.style.top = finalY + 'px';
                     wrapper.style.width = finalSize + 'px';
                     wrapper.style.height = finalSize + 'px';
-                    wrapper.style.opacity = '1';
                 }, 200);
 
-                // Phase 3: Lock in place with hover effects
+                // After animation completes
                 setTimeout(() => {
-                    wrapper.style.transition = 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
                     wrapper.style.pointerEvents = 'auto';
-                    
-                    wrapper.addEventListener('mouseenter', () => {
-                        wrapper.style.transform = 'translate(-50%, -50%) scale(1.08) translateY(-8px)';
-                    });
-                    
-                    wrapper.addEventListener('mouseleave', () => {
-                        wrapper.style.transform = 'translate(-50%, -50%) scale(1)';
-                    });
-                    
                     wrapper.style.animation = 'characterBreathe 3s ease-in-out infinite';
                 }, config.animationDuration + 300);
             };
-
-            img.onerror = () => {
-                console.error(`Failed to load character image: ${imagePath}`);
-            };
-
         }, delay);
     }
 
@@ -152,12 +119,8 @@ const finalY = isMobile
         const style = document.createElement('style');
         style.textContent = `
             @keyframes characterBreathe {
-                0%, 100% { 
-                    transform: translate(-50%, -50%) scale(1);
-                }
-                50% { 
-                    transform: translate(-50%, -50%) scale(1.02);
-                }
+                0%, 100% { transform: translate(-50%, -50%) scale(1); }
+                50% { transform: translate(-50%, -50%) scale(1.02); }
             }
         `;
         document.head.appendChild(style);
@@ -179,14 +142,21 @@ const finalY = isMobile
 
     init();
 
+    // Testing API
     window.CharacterAnimation = {
         config: config,
         restart: function() {
             document.querySelectorAll('.character-wrapper').forEach(el => el.remove());
-            document.querySelectorAll('style').forEach(s => {
-                if (s.textContent.includes('characterBreathe')) s.remove();
-            });
             startSequence();
+        },
+        setHeightOffset: function(offset) {
+            config.heightOffset = offset;
+            this.restart();
+        },
+        setPositions: function(jewPos, africaPos) {
+            config.positions.jew = jewPos;
+            config.positions.africa = africaPos;
+            this.restart();
         }
     };
 
