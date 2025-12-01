@@ -95,7 +95,7 @@
 
                 // Animate to final position
                 setTimeout(() => {
-                    wrapper.style.zIndex = '45';  // PDF fix: under nav (z-index 100)
+                    wrapper.style.zIndex = '10';  // Low z-index so characters go BEHIND nav on scroll
                     wrapper.style.transition = `
                         left ${config.animationDuration}ms cubic-bezier(0.34, 1.2, 0.64, 1),
                         top ${config.animationDuration}ms cubic-bezier(0.34, 1.2, 0.64, 1),
