@@ -1,0 +1,40 @@
+/* Character Animation Styles */
+
+.speech-bubble-container,
+.thought-bubble,
+.speech-bubble {
+    position: relative;
+    z-index: 50 !important;
+}
+
+.character-wrapper {
+    pointer-events: none;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    transform-origin: center center;
+}
+
+.character {
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+}
+
+@keyframes characterBreathe {
+    0%, 100% { 
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% { 
+        transform: translate(-50%, -50%) scale(1.02);
+    }
+}
+
+.section-divider {
+    position: relative;
+    z-index: 1;
+}
+
+@media (max-width: 768px) {
+    .character-wrapper {
+        transform-origin: center center;
+    }
+}
